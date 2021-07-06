@@ -10,3 +10,8 @@
 .term {
     font-weight: bold;
 }
+.select-error {
+    color: #fff;
+    text-align: center;
+    font-size: 26px;
+}
