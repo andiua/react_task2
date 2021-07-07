@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GotService from '../../services/gotService';
 import Spinner from '../spinner';
+import ErrorComponent from '../error';
 import './randomChar.css';
 
 export default class RandomChar extends Component {
@@ -39,8 +40,9 @@ export default class RandomChar extends Component {
 	}
 
 	render() {
+		console.log(this.props);
 		const {
-			char: { name, gender, born, died, culture }, loading } = this.state;
+			char: { name, gender, born, died, culture }, loading, error } = this.state;
 
 		if (loading) {
 			return (
@@ -48,6 +50,14 @@ export default class RandomChar extends Component {
 					<Spinner />
 				</div>
 			);
+		}
+
+		if(error) {
+			return (
+				<div className="random-block rounded">
+					<ErrorComponent />
+				</div>
+			)
 		}
 
 		return (

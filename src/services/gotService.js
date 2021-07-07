@@ -12,12 +12,14 @@ export default class GotService {
         return await res.json();
     }
 
-    getAllBooks() {
-        return this.getResource(`/books/`);
+    async getAllBooks() {
+		const res = await this.getResource(`/books/`);
+		return res.map(this._transformBook)
     }
     
-    getBook(id) {
-        return this.getResource(`/books/${id}/`);
+    async getBook(id) {
+		const res = await this.getResource(`/books/${id}/`);
+        return this._transformBook(res);
     }
     
     async getAllCharacters() {
@@ -30,41 +32,47 @@ export default class GotService {
 		return this._transformCharacter(res)
     }
     
-    getAllHouses() {
-        return this.getResource(`/houses/`);
+    async getAllHouses() {
+		const res = await this.getResource(`/houses/`);
+		return res.map(this._transformHouse)
     }
     
-    getHouse(id) {
-        return this.getResource(`/houses/${id}/`);
+    async getHouse(id) {
+		const res = await this.getResource(`/houses/${id}/`);
+        return this._transformHouse(res)
     }
+
+	_checkEmpty(value) { 
+		return value.length === 0 ? 'no data :(' : value;
+	}
 
 	_transformCharacter(char) {
 		return {
-			name: char.name,
-			gender: char.gender,
-			born: char.born,
-			died: char.died,
-			culture: char.culture
+			name: this._checkEmpty(char.name),
+			gender: this._checkEmpty(char.gender),
+			born: this._checkEmpty(char.born),
+			died: this._checkEmpty(char.died),
+			culture: this._checkEmpty(char.culture)
 		}
 	}
 
 	_transformHouse(house) {
 		return {
-			name: house.name,
-			region: house.region,
-			words: house.words,
-			titles: house.titles,
-			overlord: house.overlord,
-			ancestralWeapons: house.ancestralWeapons
+			name: this._checkEmpty(house.name),
+			region: this._checkEmpty(house.region),
+			words: this._checkEmpty(house.words),
+			titles: this._checkEmpty(house.titles),
+			overlord: this._checkEmpty(house.overlord),
+			ancestralWeapons: this._checkEmpty(house.ancestralWeapons)
 		}
 	}
 
 	_transformBook(book) {
 		return {
-			name: book.name,
-			numberOfPages: book.numberOfPages,
-			publisher: book.publisher,
-			released: book.released
+			name: this._checkEmpty(book.name),
+			numberOfPages: this._checkEmpty(book.numberOfPages),
+			publisher: this._checkEmpty(book.publisher),
+			released: this._checkEmpty(book.released)
 		}
 	}
  }
