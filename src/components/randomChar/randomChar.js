@@ -5,10 +5,6 @@ import ErrorComponent from '../error';
 import './randomChar.css';
 
 export default class RandomChar extends Component {
-	constructor() {
-		super();
-		this.upDateChar();
-	}
 
 	gotService = new GotService();
 	state = {
@@ -16,6 +12,15 @@ export default class RandomChar extends Component {
 		loading: true,
 		error: false
 	};
+
+	componentDidMount() { //викликається як компонент закічив рендитиритись після 1 ініціалізації
+		this.upDateChar();
+		this.timerId = setInterval(this.upDateChar, 4000);
+	}
+
+	componentWillUnmount() {//викликається перед видаленням компонента
+		clearTimeout(this.timerId);
+	}
 
 	onCharLoaded = char => {
 		this.setState({
@@ -40,7 +45,6 @@ export default class RandomChar extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		const {
 			char: { name, gender, born, died, culture }, loading, error } = this.state;
 
