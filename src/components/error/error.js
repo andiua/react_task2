@@ -5,6 +5,9 @@ const ErrorStyle = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	p{
+		color: red;
+	}
 `;
 const ErrorComponent = () => {
 	return (

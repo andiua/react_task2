@@ -43,12 +43,18 @@ export default class GotService {
         return this._transformHouse(res)
     }
 
+	_addId(url) {
+		const regExp = /[\d]+/g;
+		return url.match(regExp)[0];
+	}
+
 	_checkEmpty (value) { 
 		return value.length === 0 ? 'no data :(' : value;
 	}
 
 	_transformCharacter = (char) => {
 		return {
+			id: this._addId(char.url),
 			name: this._checkEmpty(char.name),
 			gender: this._checkEmpty(char.gender),
 			born: this._checkEmpty(char.born),
