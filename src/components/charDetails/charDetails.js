@@ -30,7 +30,6 @@ export default class CharDetails extends Component {
 
 	upDateChar() {
 		const {charId} = this.props;
-		console.log(charId);
 		if(!charId) {
 			return;
 		}

@@ -3,11 +3,15 @@ import { Col, Row, Container, Button } from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
 import ErrorComponent from '../error';
+import ItemList from '../itemList';
+import CharDetails from '../charDetails';
 import CharacterPage from '../characterPage';
+import GotService from '../../services/gotService';
 import './app.css';
 
 export default class App extends Component {
-
+	
+	gotService = new GotService();
 	state = {
 		displayRandomChar: true, 
 		error: false
@@ -51,6 +55,28 @@ export default class App extends Component {
 						</Col>
 					</Row>
 					<CharacterPage/>
+					<Row>
+						<Col md="6">
+							<ItemList
+								getData={this.gotService.getAllBooks}
+								renderItem={ (item) => item.name} //в рендер функцію можна передати jsx верстку <><span>{item.name}</span> <button>Click me</button></>)
+								onCharSelected={this.onCharSelected} />
+						</Col>
+						<Col md="6">
+							<CharDetails charId={this.state.selectedChar} />
+						</Col>
+					</Row>
+					<Row>
+						<Col md="6">
+							<ItemList
+								getData={this.gotService.getAllHouses}
+								renderItem={ (item) => item.name}
+								onCharSelected={this.onCharSelected} />
+						</Col>
+						<Col md="6">
+							<CharDetails charId={this.state.selectedChar} />
+						</Col>
+					</Row>
 				</Container>
 			</>
 		);
