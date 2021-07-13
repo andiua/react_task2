@@ -28,12 +28,12 @@ export default class ItemList extends Component {
 		return arr.map( (item) => {
 			const {id} = item;
 			const label = this.props.renderItem(item);
-			console.log(item);
+			console.log(this.props);
 			return (
 				<li 
 					key={id} 
 					className="list-group-item"
-					onClick={() => this.props.onItemSelected(id)}
+					onClick={() => this.props.onCharSelected(id)}
 					>
 					{label}
 				</li>
