@@ -12,10 +12,23 @@ export default class RandomChar extends Component {
 		loading: true,
 		error: false
 	};
+	static defaultProps = { //щоб задати дефолтні пропси. прописуємо в компоненті властивість defaultProps. це нова можливість es9
+		interval: 1000
+	}
+	static propTypes = {
+		interval: (props, propName, componentName) => {
+			const value = props[propName];
+
+			if (typeof value === 'number' && !isNaN(value)){
+				return null;
+			}
+			return new TypeError(`${componentName}: ${propName} must be a number`);
+		}
+	}
 
 	componentDidMount() { //викликається як компонент закічив рендитиритись після 1 ініціалізації
 		this.upDateChar();
-		this.timerId = setInterval(this.upDateChar, 4000);
+		this.timerId = setInterval(this.upDateChar, this.props.interval);
 	}
 
 	componentWillUnmount() {//викликається перед видаленням компонента
@@ -89,3 +102,7 @@ export default class RandomChar extends Component {
 		);
 	}
 }
+
+// RandomChar.defaultProps = { //щоб задати дефолтні пропси. прописуємо в компоненті властивість defaultProps
+// 	interval: 1000
+// }

@@ -1,3 +1,9 @@
 .toggle-random{
 	margin-bottom: 40px;
 }
+.app {
+    background: url('got.jpeg') center center no-repeat;
+    background-size: cover;
+    font-size: 16px;
+    min-height: 100vh;	
+}
