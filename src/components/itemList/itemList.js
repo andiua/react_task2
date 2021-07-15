@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import Spinner from '../spinner';
+import React from 'react';
 import styled from 'styled-components';
 
 const ItemListStyle = styled.ul`
@@ -7,32 +6,18 @@ const ItemListStyle = styled.ul`
 		cursor: pointer;
 	}
 `
-export default class ItemList extends Component {
+const ItemList = ({renderItem, onItemSelected, data}) => {
 
-	state = {
-		itemList: null
-	}
+	const renderItems = (arr) => {
 
-	componentDidMount() {
-		const {getData} = this.props
-
-		getData()
-			.then( itemList => {
-				this.setState({
-					itemList
-				});
-			})
-	}
-
-	renderItems(arr) {
 		return arr.map( (item) => {
 			const {id} = item;
-			const label = this.props.renderItem(item);
+			const label = renderItem(item);
 			return (
 				<li 
 					key={id} 
 					className="list-group-item"
-					onClick={() => this.props.onItemSelected(id)}
+					onClick={() => onItemSelected(id)}
 					>
 					{label}
 				</li>
@@ -40,19 +25,13 @@ export default class ItemList extends Component {
 		})
 	}
 
-    render() {
-
-		const {itemList} = this.state;
-
-		if(!itemList) {
-			return <Spinner />
-		}
-
-		const items = this.renderItems(itemList)
+    	const items = renderItems(data)
         return (
             <ItemListStyle className="list-group">
 				{items}
             </ItemListStyle>
         );
-    }
+    
 }
+
+export default ItemList;

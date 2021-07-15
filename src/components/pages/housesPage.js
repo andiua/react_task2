@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
+import withData from '../withData';
 import ItemList from '../itemList';
 import ItemDetails, {Field} from '../itemDetails';
 import ErrorComponent from '../error';
 import GotService from '../../services/gotService';
 import RowBlock from '../rowBlock';
 
-export default class CharacterPage extends Component {
+export default class HousePage extends Component {
 
 	gotService = new GotService();
-	
+	list = withData(ItemList, this.gotService.getAllHouses);
 	state = {
-		selectedChar: null, 
+		selectedHouse: null, 
 		error: false
 	};
 
@@ -22,7 +23,7 @@ export default class CharacterPage extends Component {
 
 	onItemSelected = id => {
 		this.setState({
-			selectedChar: id
+			selectedHouse: id
 		})
 	}
 
@@ -31,25 +32,25 @@ export default class CharacterPage extends Component {
 		if(this.state.error) {
 			return <ErrorComponent />
 		}
-
+		const HousesList = this.list;
 		const itemList = (
-			<ItemList
+			<HousesList
 				onItemSelected={this.onItemSelected} 
-				getData={this.gotService.getAllCharacters}
-				renderItem={ ({name, gender}) => `${name} (${gender})`} /> //в рендер функцію можна передати jsx верстку <><span>{item.name}</span> <button>Click me</button></>)
+				renderItem={ ({name, words}) => `${name} (${words})`} />
 		);
-		const charDetails = (	
-			<ItemDetails itemId={this.state.selectedChar} getData={this.gotService.getCharacter}> 
+		const houseDetails = (	
+			<ItemDetails itemId={this.state.selectedHouse} getData={this.gotService.getHouse}> 
 			{/* те, що в середині компонента і є this.props.children , а <Field - це просто меоді який ми імпортнули*/}
-				<Field field='gender' label='Gender' /> 
-				<Field field='born' label='Born' />
-				<Field field='died' label='Died' />
-				<Field field='culture' label='Culture' />
+				<Field field='region' label='Region' /> 
+				<Field field='words' label='Words' />
+				<Field field='titles' label='Titles' />
+				<Field field='overlord' label='Overlord' />
+				<Field field='ancestralWeapons' label='Ancestral Weapons' />
 			</ItemDetails>
 		);
 
 		return (
-			<RowBlock left = {itemList} right = {charDetails} />
+			<RowBlock left = {itemList} right = {houseDetails} />
 		);
 	}
 }

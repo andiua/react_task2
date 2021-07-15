@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import withData from '../withData';
 import ItemList from '../itemList';
 import ErrorComponent from '../error';
 import GotService from '../../services/gotService';
@@ -7,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 class BookPage extends Component {
 
 	gotService = new GotService();
-
+	list = withData(ItemList, this.gotService.getAllBooks);
 	state = {
 		// selectedBook: null, 
 		error: false
@@ -45,16 +46,15 @@ class BookPage extends Component {
 		// 		<Field field='released' label='Released' />
 		// 	</ItemDetails>
 		// );
-
+		const BooksList = this.list;
 		return (
 			// <RowBlock left = {itemList} right = {bookDetails} />
-			<ItemList
+			<BooksList
 				// onItemSelected={this.onItemSelected} 
 				onItemSelected={ itemId => {
 					// this.props.history.push(`/books/${itemId}`) //обсолютний шлях
 					this.props.history.push(itemId) //відносний шлях
 				}}
-				getData={this.gotService.getAllBooks}
 				renderItem={ ({name, released}) => `${name} (Year ${released.split('-')[0]} )`} />
 		);
 	}

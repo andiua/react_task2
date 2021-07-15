@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import GotService from '../../services/gotService';
 import styled from 'styled-components';
 
 const ItemDetailsStyle = styled.div`
@@ -23,7 +22,6 @@ export {Field};
 
 export default class ItemDetails extends Component {
 
-	gotService = new GotService();
 	state = {
 		item: null
 	}
