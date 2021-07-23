@@ -9,7 +9,7 @@ import RowBlock from '../rowBlock';
 export default class HousePage extends Component {
 
 	gotService = new GotService();
-	list = withData(ItemList, this.gotService.getAllHouses);
+
 	state = {
 		selectedHouse: null, 
 		error: false
@@ -26,7 +26,8 @@ export default class HousePage extends Component {
 			selectedHouse: id
 		})
 	}
-
+	list = withData(ItemList, this.gotService.getAllHouses, {onItemSelected:this.onItemSelected,
+		renderItem:({name, words}) => `${name} (${words})`});
 	render() {
 
 		if(this.state.error) {
@@ -35,8 +36,7 @@ export default class HousePage extends Component {
 		const HousesList = this.list;
 		const itemList = (
 			<HousesList
-				onItemSelected={this.onItemSelected} 
-				renderItem={ ({name, words}) => `${name} (${words})`} />
+				 />
 		);
 		const houseDetails = (	
 			<ItemDetails itemId={this.state.selectedHouse} getData={this.gotService.getHouse}> 

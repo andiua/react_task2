@@ -9,7 +9,7 @@ import RowBlock from '../rowBlock';
 export default class CharacterPage extends Component {
 
 	gotService = new GotService();
-	app = withData(ItemList, this.gotService.getAllCharacters);
+
 	state = {
 		selectedChar: null, 
 		error: false
@@ -26,17 +26,18 @@ export default class CharacterPage extends Component {
 			selectedChar: id
 		})
 	}
+
+	app = withData(ItemList, this.gotService.getAllCharacters, {onItemSelected:this.onItemSelected,
+		renderItem:({name, gender}) => `${name} (${gender})`});
 	
 	render() {
-		
 		if(this.state.error) {
 			return <ErrorComponent />
 		}
 		const CharacterApp = this.app;
 		const itemList = (
 			<CharacterApp
-				onItemSelected={this.onItemSelected} 
-				renderItem={ ({name, gender}) => `${name} (${gender})`} /> //в рендер функцію можна передати jsx верстку <><span>{item.name}</span> <button>Click me</button></>)
+				 /> //в рендер функцію можна передати jsx верстку <><span>{item.name}</span> <button>Click me</button></>)
 		);
 		const charDetails = (	
 			<ItemDetails itemId={this.state.selectedChar} getData={this.gotService.getCharacter}> 

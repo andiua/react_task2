@@ -9,7 +9,6 @@ const ItemListStyle = styled.ul`
 const ItemList = ({renderItem, onItemSelected, data}) => {
 
 	const renderItems = (arr) => {
-
 		return arr.map( (item) => {
 			const {id} = item;
 			const label = renderItem(item);

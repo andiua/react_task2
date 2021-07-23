@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 class BookPage extends Component {
 
 	gotService = new GotService();
-	list = withData(ItemList, this.gotService.getAllBooks);
+	
 	state = {
 		// selectedBook: null, 
 		error: false
@@ -25,7 +25,10 @@ class BookPage extends Component {
 	// 		selectedBook: id
 	// 	})
 	// }
-
+	list = withData(ItemList, this.gotService.getAllBooks, {onItemSelected: itemId => {
+		// this.props.history.push(`/books/${itemId}`) //обсолютний шлях
+		this.props.history.push(itemId) //відносний шлях
+	}, renderItem: ({name, released}) => `${name} (Year ${released.split('-')[0]} )`});
 	render() {
 
 		if(this.state.error) {
@@ -49,13 +52,13 @@ class BookPage extends Component {
 		const BooksList = this.list;
 		return (
 			// <RowBlock left = {itemList} right = {bookDetails} />
-			<BooksList
+			<BooksList />
 				// onItemSelected={this.onItemSelected} 
-				onItemSelected={ itemId => {
+				// onItemSelected={ itemId => {
 					// this.props.history.push(`/books/${itemId}`) //обсолютний шлях
-					this.props.history.push(itemId) //відносний шлях
-				}}
-				renderItem={ ({name, released}) => `${name} (Year ${released.split('-')[0]} )`} />
+					// this.props.history.push(itemId) //відносний шлях
+				// }}
+				// renderItem={ ({name, released}) => `${name} (Year ${released.split('-')[0]} )`} 
 		);
 	}
 }

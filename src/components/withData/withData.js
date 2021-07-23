@@ -1,32 +1,21 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Spinner from '../spinner';
 
-const withData = (View, getData) => {
-	return class extends Component {
-
-		state = {
-			data: null
-		}
+const withData = (View, getData, prop) => {
+	return () => {
+		const [data, updateData] = useState([])
 	
-		componentDidMount() {
+		useEffect( () => {
 			getData()
-				.then( data => {
-					this.setState({
-						data
-					});
-				})
-		}
-		render() {
-			
-			const {data} = this.state;
+			.then( data => {
+				updateData(data)
+			})
+		}, [])
 
-			if(!data) {
-				return <Spinner />
-			}
-
-			return <View {...this.props} data={this.state.data}/>;
+		if(!data) {
+			return <Spinner />
 		}
+		return <View {...prop} data={data}/>;
 	};
 }
-// const gotService = new GotService(); //передаємо метод з сервісу АПІ як аргумент
 export default withData;
