@@ -4,6 +4,7 @@ import ItemList from '../itemList';
 import ErrorComponent from '../error';
 import GotService from '../../services/gotService';
 import { withRouter } from 'react-router-dom';
+import MyContext from '../context';
 
 class BookPage extends Component {
 
@@ -25,10 +26,7 @@ class BookPage extends Component {
 	// 		selectedBook: id
 	// 	})
 	// }
-	list = withData(ItemList, this.gotService.getAllBooks, {onItemSelected: itemId => {
-		// this.props.history.push(`/books/${itemId}`) //обсолютний шлях
-		this.props.history.push(itemId) //відносний шлях
-	}, renderItem: ({name, released}) => `${name} (Year ${released.split('-')[0]} )`});
+	list = withData(ItemList, this.gotService.getAllBooks);
 	render() {
 
 		if(this.state.error) {
@@ -52,7 +50,12 @@ class BookPage extends Component {
 		const BooksList = this.list;
 		return (
 			// <RowBlock left = {itemList} right = {bookDetails} />
-			<BooksList />
+			<MyContext.Provider value={{onItemSelected: itemId => {
+				// this.props.history.push(`/books/${itemId}`) //обсолютний шлях
+				this.props.history.push(itemId) //відносний шлях
+			}, renderItem: ({name, released}) => `${name} (Year ${released.split('-')[0]} )`}}>
+				<BooksList />
+			</MyContext.Provider>
 				// onItemSelected={this.onItemSelected} 
 				// onItemSelected={ itemId => {
 					// this.props.history.push(`/books/${itemId}`) //обсолютний шлях

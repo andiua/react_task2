@@ -5,11 +5,11 @@ import ItemDetails, {Field} from '../itemDetails';
 import ErrorComponent from '../error';
 import GotService from '../../services/gotService';
 import RowBlock from '../rowBlock';
+import MyContext from '../context';
 
 export default class CharacterPage extends Component {
 
 	gotService = new GotService();
-
 	state = {
 		selectedChar: null, 
 		error: false
@@ -27,8 +27,7 @@ export default class CharacterPage extends Component {
 		})
 	}
 
-	app = withData(ItemList, this.gotService.getAllCharacters, {onItemSelected:this.onItemSelected,
-		renderItem:({name, gender}) => `${name} (${gender})`});
+	app = withData(ItemList, this.gotService.getAllCharacters);
 	
 	render() {
 		if(this.state.error) {
@@ -36,8 +35,11 @@ export default class CharacterPage extends Component {
 		}
 		const CharacterApp = this.app;
 		const itemList = (
-			<CharacterApp
-				 /> //в рендер функцію можна передати jsx верстку <><span>{item.name}</span> <button>Click me</button></>)
+			<MyContext.Provider value={{onItemSelected: this.onItemSelected, renderItem:({name, gender}) => `${name} (${gender})`}}>
+				<CharacterApp
+				//в рендер функцію можна передати jsx верстку <><span>{item.name}</span> <button>Click me</button></>)
+				 /> 
+				 </MyContext.Provider>
 		);
 		const charDetails = (	
 			<ItemDetails itemId={this.state.selectedChar} getData={this.gotService.getCharacter}> 

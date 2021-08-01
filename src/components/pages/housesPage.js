@@ -5,6 +5,7 @@ import ItemDetails, {Field} from '../itemDetails';
 import ErrorComponent from '../error';
 import GotService from '../../services/gotService';
 import RowBlock from '../rowBlock';
+import MyContext from '../context';
 
 export default class HousePage extends Component {
 
@@ -26,8 +27,7 @@ export default class HousePage extends Component {
 			selectedHouse: id
 		})
 	}
-	list = withData(ItemList, this.gotService.getAllHouses, {onItemSelected:this.onItemSelected,
-		renderItem:({name, words}) => `${name} (${words})`});
+	list = withData(ItemList, this.gotService.getAllHouses);
 	render() {
 
 		if(this.state.error) {
@@ -35,8 +35,11 @@ export default class HousePage extends Component {
 		}
 		const HousesList = this.list;
 		const itemList = (
-			<HousesList
-				 />
+			<MyContext.Provider value={{onItemSelected:this.onItemSelected,
+				renderItem:({name, words}) => `${name} (${words})`}}>
+				<HousesList
+					 />
+			</MyContext.Provider>
 		);
 		const houseDetails = (	
 			<ItemDetails itemId={this.state.selectedHouse} getData={this.gotService.getHouse}> 
